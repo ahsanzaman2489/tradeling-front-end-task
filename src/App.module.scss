@@ -1,0 +1,21 @@
+@import "./utils/variables";
+
+:global {
+  * {
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  body, html, #root {
+    height: 100%;
+  }
+
+  body {
+    background: $light-gray;
+  }
+}
+
+.Container {
+  width: 970px;
+  height: 100%;
+}

@@ -4,6 +4,7 @@ import {
     Route,
     useRouteMatch,
 } from "react-router-dom";
+import SearchBox from '../../componenets/SearchBox'
 
 
 interface searchProps {
@@ -12,19 +13,18 @@ interface searchProps {
 
 const Search: React.FC<searchProps> = () => {
     let match = useRouteMatch();
-    console.log(match)
     return (
-        <div>
-            Search with box
+        <>
+            <SearchBox/>
             <Switch>
-                <Route path={`/users`}>
-                    hello
+                <Route path={`${match.path}users`}>
+                    Users
                 </Route>
-                <Route path={`/repo`}>
-                    <h3>Please select a topic.</h3>
+                <Route path={`${match.path}repo`}>
+                    Repository
                 </Route>
             </Switch>
-        </div>
+        </>
     )
 }
 

@@ -1,18 +1,18 @@
 import React from 'react';
 import {Route, Router, Switch} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
-import './App.css';
-import Search from "./routes/Search";
+import styles from './App.module.scss';
+import Search from "./routes/Search/";
 
 
 function App() {
     const history = createBrowserHistory();
     return (
-        <Router history={history}>
+        <div className={styles.Container}><Router history={history}>
             <Switch>
-                <Route  component={Search} path="/"/>
+                <Route component={Search} path="/"/>
             </Switch>
-        </Router>
+        </Router></div>
     );
 }
 
