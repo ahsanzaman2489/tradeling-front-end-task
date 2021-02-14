@@ -5,9 +5,12 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  height: 100%;
 
-  &.default {
-    height: 100%;
+  &.top {
+    height: initial;
+    padding-top: 40px;
+    margin-bottom: 40px;
   }
 
   .input {
