@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {Route, Router, Switch} from 'react-router-dom';
+import {createBrowserHistory} from 'history';
+import styles from './App.module.scss';
+import Search from "./routes/Search/";
+import {SearchProvider} from "./context/searchContext";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const history = createBrowserHistory();
+    return (
+        <div className={styles.Container}><Router history={history}>
+            <SearchProvider>
+                <Switch>
+                    <Route component={Search} path="/"/>
+                </Switch>
+            </SearchProvider>
+        </Router></div>
+    );
 }
 
 export default App;

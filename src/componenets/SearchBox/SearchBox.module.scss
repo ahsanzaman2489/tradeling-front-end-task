@@ -1,0 +1,49 @@
+@import "../../utils/variables";
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+
+  &.top {
+    height: initial;
+    padding-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .input {
+    width: 65%;
+    margin: 0;
+  }
+
+  .select {
+    width: 35%;
+    margin: 0 0 0 15px;
+  }
+
+  .input, .select {
+    padding: 10px 10px;
+    border-radius: 10px;
+    height: 55px;
+    border: $dark-gray 1px solid
+  }
+
+
+  .headingWrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .logo {
+      margin-right: 20px;
+    }
+  }
+
+  .inputWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+  }
+}
