@@ -25,7 +25,7 @@ const SingleUserCard: React.FC<userProps> = ({item}) => {
     return (
         <div className="card">
             <div className="avatar">
-                <img src={avatarUrl} alt=""/>
+                <img src={avatarUrl} alt={avatarUrl}/>
             </div>
             <div className="content">
                 <div>

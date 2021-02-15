@@ -7,7 +7,7 @@ const pageInfo = `pageInfo {
     }`;
 
 const users = ` ... on User {           
-                      avatarUrl(size: 10)
+                      avatarUrl(size: 100)
                       login
                       name
                       url
