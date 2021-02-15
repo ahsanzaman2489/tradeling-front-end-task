@@ -30,7 +30,7 @@ const List: React.FC<listProps> = ({data, Component}) => {
     }
 
     const debounceLoadMoreData = useCallback(
-        debounce((selectValue) => loadMore(selectValue), 500)
+        debounce((selectValue) => loadMore(selectValue), 1000)
         , [endCursor]);
 
     const trackScrolling = () => {
@@ -47,6 +47,7 @@ const List: React.FC<listProps> = ({data, Component}) => {
 
     const isSmallScreen = window.innerWidth <= 1000;
     const renderList = (data: any) => {
+        if (!data.nodes?.length) return (<div className={styles.noData}>No data available</div>)
         const rows: any = [];
         let items: any = [];
 

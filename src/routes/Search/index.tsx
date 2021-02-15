@@ -24,11 +24,11 @@ const Search: React.FC<any> = () => {
             <SearchBox/>
             <Switch>
                 <Route path={`${match.path}users`}>
-                    {users.isLoading ? <Loading/> : (users?.nodes?.length > 0 && searchTerm?.length > 2) &&
+                    {users.isLoading ? <Loading/> : (searchTerm?.length > 2) &&
                         <Users usersList={users}/>}
                 </Route>
                 <Route path={`${match.path}repositories`}>
-                    {repos.isLoading ? <Loading/> : (repos?.nodes?.length > 0 && searchTerm?.length > 2) &&
+                    {repos.isLoading ? <Loading/> : (searchTerm?.length > 2) &&
                         <Repos repoList={repos}/>}
                 </Route>
             </Switch>

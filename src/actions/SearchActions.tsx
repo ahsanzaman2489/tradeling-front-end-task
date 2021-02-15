@@ -7,7 +7,7 @@ export const searchUsers = async (searchTerm: any, dispatch: any) => {
         const response: any = await Service({
             searchString: searchTerm
         }, searchUserQuery, 'users')
-        if (response.search && response.search?.nodes?.length) {
+        if (response.search) {
             dispatch({
                 type: USER_FETCHED,
                 payload: {
@@ -27,7 +27,7 @@ export const searchRepo = async (searchTerm: any, dispatch: any) => {
         const response: any = await Service({
             searchString: searchTerm
         }, searchRepoQuery, 'repos')
-        if (response.search && response.search?.nodes?.length) {
+        if (response.search) {
             dispatch({
                 type: REPO_FETCHED,
                 payload: {
