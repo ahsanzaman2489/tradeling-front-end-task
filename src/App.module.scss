@@ -2,7 +2,6 @@
 
 :global {
   * {
-    margin: 0 auto;
     box-sizing: border-box;
   }
 
@@ -12,6 +11,7 @@
 
   body {
     background: $light-gray;
+    font-family: Arial, sans-serif;
   }
 
   .loading {
@@ -22,14 +22,94 @@
     width: 100%;
     padding: 20px;
     margin-bottom: 20px;
-    background: $white;
+    background: #ffff;
     margin-left: 10px;
     margin-right: 10px;
+    border: 1px solid #d7d7d7;
+    border-radius: 7px;
+    display: flex;
+
+    .avatar {
+      margin-left: 0;
+      margin-right: 20px;
+
+      img {
+        width: 100px;
+        border-radius: 100px;
+      }
+    }
+
+    .content {
+      margin-left: 0;
+      width: 100%;
+      position: relative;
+      font-size: 12px;
+
+      .name {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 16px;
+        color: $dark-blue;
+      }
+
+      .userName {
+        margin-top: 5px;
+        font-size: 12px;
+        margin-bottom: 40px;
+      }
+
+      .following {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+
+        ul {
+          display: flex;
+          margin: 0;
+          padding: 0;
+          justify-content: space-between;
+
+          li {
+            list-style: none;
+            color: $dark-gray;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+
+    .languageColor {
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+      border-radius: 100px;
+    }
   }
 
 }
 
 .Container {
-  width: 970px;
+  margin: 0 auto;
+  width: 1240px;
   height: 100%;
+}
+
+
+@media all and (max-width: 1270px) {
+  .Container {
+    width: 970px;
+  }
+}
+
+@media all and (max-width: 1000px) {
+  .Container {
+    width: 768px;
+  }
+}
+
+@media all and (max-width: 795px) {
+  .Container {
+    width: 100%;
+  }
 }

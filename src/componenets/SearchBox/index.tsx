@@ -6,8 +6,13 @@ import {debounce} from 'lodash';
 import {searchUsers, searchRepo} from "../../actions/SearchActions";
 import {useDispatch} from "react-redux";
 import {withRouter} from 'react-router-dom';
+import {REPO_FETCHING, USER_FETCHING} from "../../utils/actionTypes";
 
-const SearchBox: React.FC<any> = ({history}) => {
+interface searchProps {
+    history: any
+}
+
+const SearchBox: React.FC<searchProps> = ({history}) => {
     const [searchValue, setSearchValue] = useState('');
     const [selectValue, setSelectValue] = useState(history.location.pathname === '/users' ? "users" : "repositories");
     const dispatch = useDispatch();
@@ -16,31 +21,31 @@ const SearchBox: React.FC<any> = ({history}) => {
         {value: 'repositories', label: 'Repositories'},
     ];
 
-    const getData = (searchText: React.SetStateAction<string>, type: any) => {
-        if (type === 'users') {
+    const getData = useCallback((searchText: React.SetStateAction<string>, value: React.SetStateAction<string> | string) => {
+        if (value === 'users') {
             searchUsers(searchText, dispatch)
         } else {
             searchRepo(searchText, dispatch)
         }
-    }
+    }, [searchValue, selectValue])
+
+    const initLoading = (type: string) => type === 'users' ? dispatch({type: USER_FETCHING}) : dispatch({type: REPO_FETCHING})
 
     const debounceSearchText = useCallback(
-        debounce((searchText: React.SetStateAction<string>) => getData(searchText, selectValue), 1000)
+        debounce((searchText: React.SetStateAction<string>, selectValue) => getData(searchText, selectValue), 1000)
         , []);
 
-    const searchChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         const searchText = e.currentTarget?.value;
         setSearchValue(searchText)
-
-
         if (searchText?.length > 2) {
-            debounceSearchText(searchText)
+            debounceSearchText(searchText, selectValue)
             history.push(`/${selectValue}`)
         } else if (history.location.pathname !== '/') {
             history.push('/')
         }
-    }
+    }, [])
 
     const selectHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
         const value = e.target.value;
@@ -48,6 +53,12 @@ const SearchBox: React.FC<any> = ({history}) => {
         history.push(`/${value}`)
         if (searchValue.length > 2) getData(searchValue, value)
     }
+
+    useEffect(() => {
+        if (searchValue?.length > 2) {
+            initLoading(selectValue)
+        }
+    }, [searchValue, selectValue])
 
 
     return (

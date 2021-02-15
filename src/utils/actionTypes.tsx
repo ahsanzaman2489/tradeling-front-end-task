@@ -1,0 +1,4 @@
+export const USER_FETCHING = 'USER_FETCHING';
+export const USER_FETCHED = 'USER_FETCHED';
+export const REPO_FETCHING = 'REPO_FETCHING';
+export const REPO_FETCHED = 'REPO_FETCHED';

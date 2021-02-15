@@ -1,30 +1,39 @@
 import {Service} from "../Services";
 import {searchUserQuery, searchRepoQuery} from "../Services/queries";
+import {REPO_FETCHED, USER_FETCHED} from "../utils/actionTypes";
 
 export const searchUsers = async (searchText: any, dispatch: any) => {
-    dispatch({
-        type: 'fetchingUsers',
-    })
-    const response: any = await Service(searchText, searchUserQuery)
-
-    if (response.search) {
-        dispatch({
-            type: 'UsersFetched',
-            payload: response.search
-        })
+    try {
+        const response: any = await Service(searchText, searchUserQuery, 'users')
+        if (response.search && response.search?.nodes?.length) {
+            dispatch({
+                type: USER_FETCHED,
+                payload: {
+                    searchText,
+                    ...response.search
+                }
+            })
+        }
+    } catch (e) {
+        console.log(e)
     }
+
 }
 
 export const searchRepo = async (searchText: any, dispatch: any) => {
-    dispatch({
-        type: 'fetchingRepos',
-    })
-    const response: any = await Service(searchText, searchRepoQuery)
-
-    if (response.search) {
-        dispatch({
-            type: 'reposFetched',
-            payload: response.search
-        })
+    try {
+        const response: any = await Service(searchText, searchRepoQuery, 'repos')
+        if (response.search && response.search?.nodes?.length) {
+            dispatch({
+                type: REPO_FETCHED,
+                payload: {
+                    searchText,
+                    ...response.search
+                }
+            })
+        }
+    } catch (e) {
+        console.log(e)
     }
+
 }

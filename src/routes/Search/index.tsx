@@ -10,20 +10,14 @@ import {useSelector} from "react-redux";
 import Repos from "../Repositories";
 import loadingGif from "./loading.gif";
 
-interface searchProps {
-
-}
-
 const Loading = () => <div className='loading'><img src={loadingGif} alt=""/></div>
 
-const Search: React.FC<searchProps> = () => {
+const Search: React.FC<any> = () => {
     let match = useRouteMatch();
     const {users, repos} = useSelector((state: any) => ({
         users: state.users,
         repos: state.repos,
     }));
-
-    console.log(repos)
     return (
         <>
             <SearchBox/>

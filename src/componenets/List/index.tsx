@@ -1,24 +1,25 @@
 import React from 'react';
-import styles from './Repository.module.scss';
+import styles from './List.module.scss';
 
 interface listProps {
     data: {
-        nodes: []
+        nodes: any
     },
     Component: any
 }
 
 const List: React.FC<listProps> = ({data, Component}) => {
-    const renderRepos = (data: any) => {
+
+    const isSmallScreen = window.innerWidth <= 1000;
+    const renderList = (data: any) => {
         const rows: any = [];
         let items: any = [];
 
         data.nodes.map((item: any, index: number) => {
-            if (index % 4 === 3) {
+            items.push(<Component item={item} key={index}/>)
+            if (isSmallScreen ? index % 2 === 1 : index % 3 === 2) {
                 rows.push(<div className={styles.wrapper} key={index}>{items}</div>)
                 items = [];
-            } else {
-                items.push(<Component item={item} key={index}/>)
             }
         });
 
@@ -27,7 +28,7 @@ const List: React.FC<listProps> = ({data, Component}) => {
 
     return (
         <>
-            {renderRepos(data)}
+            {renderList(data)}
         </>
     )
 }

@@ -1,20 +1,23 @@
-export default (state: {
+import {USER_FETCHING, USER_FETCHED} from '../utils/actionTypes';
+
+const initialState = {
     isLoading: false
-}, action: { type: any; payload: any; }) => {
+}
+export default (state = initialState, action: { type: any; payload: any; }) => {
     const {type, payload} = action;
     switch (type) {
-        case 'fetchingUsers':
+        case USER_FETCHING:
             return {
                 ...state,
                 isLoading: true
             }
-        case 'UsersFetched':
+        case USER_FETCHED:
             return {
                 ...state,
                 ...payload,
                 isLoading: false
             }
         default:
-            return {...state}
+            return state
     }
 };
