@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface repoProps {
+interface userProps {
     item: {
         avatarUrl: any;
         name: string,
@@ -18,7 +18,7 @@ interface repoProps {
     }
 }
 
-const SingleUserCard: React.FC<repoProps> = ({item}) => {
+const SingleUserCard: React.FC<userProps> = ({item}) => {
 
     const {name, login, avatarUrl, followers, following, repositories, url} = item;
 

@@ -1,35 +1,44 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {Dispatch, useCallback, useContext, useEffect, useState} from 'react';
 import styles from './SearchBox.module.scss';
 import classes from 'classnames';
 import {GithubIcon} from "../../utils/icons";
 import {debounce} from 'lodash';
 import {searchUsers, searchRepo} from "../../actions/SearchActions";
 import {useDispatch} from "react-redux";
-import {withRouter} from 'react-router-dom';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {REPO_FETCHING, USER_FETCHING} from "../../utils/actionTypes";
+import {SearchContext} from "../../context/searchContext";
 
 interface searchProps {
     history: any
 }
 
-const SearchBox: React.FC<searchProps> = ({history}) => {
-    const [searchValue, setSearchValue] = useState('');
-    const [selectValue, setSelectValue] = useState(history.location.pathname === '/users' ? "users" : "repositories");
+const SearchBox: React.FC<searchProps & RouteComponentProps> = ({history}) => {
+    const {searchTerm, setSearchTerm, selectValue, setSelectValue} = useContext(SearchContext);
+
     const dispatch = useDispatch();
     const selectBoxList = [
         {value: 'users', label: 'Users'},
         {value: 'repositories', label: 'Repositories'},
     ];
 
-    const getData = useCallback((searchText: React.SetStateAction<string>, value: React.SetStateAction<string> | string) => {
+    useEffect(() => {
+        const path = history.location.pathname;
+        const isUserPath = path === '/users';
+        setSelectValue(isUserPath ? "users" : "repositories");
+    }, [])
+
+    const getData = useCallback((
+        searchText: React.SetStateAction<string>,
+        value: React.SetStateAction<string> | string) => {
         if (value === 'users') {
             searchUsers(searchText, dispatch)
         } else {
             searchRepo(searchText, dispatch)
         }
-    }, [searchValue, selectValue])
+    }, [searchTerm, selectValue])
 
-    const initLoading = (type: string) => type === 'users' ? dispatch({type: USER_FETCHING}) : dispatch({type: REPO_FETCHING})
+    const initLoading = (type: ((prevState: string) => string) | string) => type === 'users' ? dispatch({type: USER_FETCHING}) : dispatch({type: REPO_FETCHING})
 
     const debounceSearchText = useCallback(
         debounce((searchText: React.SetStateAction<string>, selectValue) => getData(searchText, selectValue), 1000)
@@ -38,31 +47,33 @@ const SearchBox: React.FC<searchProps> = ({history}) => {
     const searchChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         const searchText = e.currentTarget?.value;
-        setSearchValue(searchText)
+        setSearchTerm(searchText)
         if (searchText?.length > 2) {
             debounceSearchText(searchText, selectValue)
             history.push(`/${selectValue}`)
         } else if (history.location.pathname !== '/') {
             history.push('/')
         }
-    }, [])
+    }, [selectValue])
 
     const selectHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
         const value = e.target.value;
         setSelectValue(value);
         history.push(`/${value}`)
-        if (searchValue.length > 2) getData(searchValue, value)
+        if (searchTerm.length > 2) {
+            initLoading(value)
+            getData(searchTerm, value)
+        }
     }
 
     useEffect(() => {
-        if (searchValue?.length > 2) {
+        if (searchTerm?.length > 2) {
             initLoading(selectValue)
         }
-    }, [searchValue, selectValue])
-
+    }, [searchTerm])
 
     return (
-        <div className={classes(styles.wrapper, searchValue.length > 2 ? styles.top : '')}>
+        <div className={classes(styles.wrapper, searchTerm.length > 2 ? styles.top : '')}>
             <div className={styles.headingWrapper}>
                 <GithubIcon width='50px' height='50px' className={styles.logo}/>
                 <div>
@@ -77,7 +88,7 @@ const SearchBox: React.FC<searchProps> = ({history}) => {
                 <input
                     type="text"
                     placeholder="Search..."
-                    value={searchValue}
+                    value={searchTerm}
                     onChange={searchChangeHandler}
                     className={styles.input}
                 />

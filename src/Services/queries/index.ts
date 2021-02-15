@@ -1,9 +1,12 @@
-export const searchUserQuery = `
-     query search($searchString: String!,$first: Int = 100) {
-            search(query: $searchString, type: USER,first:$first){
-            userCount
-                nodes{
-                 ... on User {           
+// Shared Queries
+const pageInfo = `pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }`;
+
+const users = ` ... on User {           
                       avatarUrl(size: 10)
                       login
                       name
@@ -18,17 +21,9 @@ export const searchUserQuery = `
                         totalCount
                       }
                     }
-                }
-            }  
-   }
-  `
+}`;
 
-export const searchRepoQuery = `
-     query search($searchString: String!,$first: Int = 100) {
-            search(query: $searchString, type: REPOSITORY,first:$first){
-                repositoryCount
-                nodes {
-               ... on Repository {
+const repository = ` ... on Repository {
                         name
                         url
                         isPrivate
@@ -47,7 +42,45 @@ export const searchRepoQuery = `
                           name
                         }
                       }
-               }
+}`;
+
+export const searchUserQuery = `
+     query search($searchString: String!,$first: Int = 50) {
+            search(query: $searchString, type: USER,first:$first){
+            userCount
+            ${pageInfo}
+                nodes{
+                 ${users}
+            }  
+}`
+
+export const searchRepoQuery = `
+     query search($searchString: String!,$first: Int = 50) {
+            search(query: $searchString, type: REPOSITORY,first:$first){
+                repositoryCount
+                 ${pageInfo}
+                nodes {
+                ${repository}
+           }  
+}`
+
+export const loadMoreUserQuery = `
+     query search($searchString: String!,$first: Int = 30 , $after:String!) {
+            search(query: $searchString, type: USER,first:$first,after:$after){
+            userCount
+            ${pageInfo}
+                nodes{
+                 ${users}
+            }  
+}`
+
+export const loadMoreRepoQuery = `
+     query search($searchString: String!,$first: Int = 30 , $after:String!) {
+            search(query: $searchString, type: REPOSITORY,first:$first, after:$after){
+                repositoryCount
+                 ${pageInfo}
+                nodes {
+                ${repository}
            }  
    }
   `
