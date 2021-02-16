@@ -28,7 +28,7 @@ const List: React.FC<listProps> = ({data, Component}) => {
         setLoading(true)
         loadMoreData(searchTerm, selectValue, endCursor, dispatch, setLoading)
     }
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
     const debounceLoadMoreData = useCallback(
         debounce((selectValue) => loadMore(selectValue), 1000)
         , [endCursor]);
@@ -57,6 +57,7 @@ const List: React.FC<listProps> = ({data, Component}) => {
                 rows.push(<div className={styles.wrapper} key={index}>{items}</div>)
                 items = [];
             }
+            return item
         });
 
         return rows;

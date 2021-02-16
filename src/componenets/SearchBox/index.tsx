@@ -1,4 +1,4 @@
-import React, {Dispatch, useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect} from 'react';
 import styles from './SearchBox.module.scss';
 import classes from 'classnames';
 import {GithubIcon} from "../../utils/icons";
@@ -22,10 +22,12 @@ const SearchBox: React.FC<searchProps & RouteComponentProps> = ({history}) => {
         {value: 'repositories', label: 'Repositories'},
     ];
 
+
     useEffect(() => {
         const path = history.location.pathname;
         const isUserPath = path === '/users';
         setSelectValue(isUserPath ? "users" : "repositories");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const getData = useCallback((
@@ -36,10 +38,12 @@ const SearchBox: React.FC<searchProps & RouteComponentProps> = ({history}) => {
         } else {
             searchRepo(searchText, dispatch)
         }
-    }, [searchTerm, selectValue])
+    }, [dispatch])
 
-    const initLoading = (type: ((prevState: string) => string) | string) => type === 'users' ? dispatch({type: USER_FETCHING}) : dispatch({type: REPO_FETCHING})
+    const initLoading =
+        useCallback((type: ((prevState: string) => string) | string) => type === 'users' ? dispatch({type: USER_FETCHING}) : dispatch({type: REPO_FETCHING}),[dispatch])
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debounceSearchText = useCallback(
         debounce((searchText: React.SetStateAction<string>, selectValue) => getData(searchText, selectValue), 1000)
         , []);
@@ -54,6 +58,7 @@ const SearchBox: React.FC<searchProps & RouteComponentProps> = ({history}) => {
         } else if (history.location.pathname !== '/') {
             history.push('/')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectValue])
 
     const selectHandler = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -70,7 +75,8 @@ const SearchBox: React.FC<searchProps & RouteComponentProps> = ({history}) => {
         if (searchTerm?.length > 2) {
             initLoading(selectValue)
         }
-    }, [searchTerm])
+    }, [searchTerm, selectValue, initLoading])
+
 
     return (
         <div className={classes(styles.wrapper, searchTerm.length > 2 ? styles.top : '')}>

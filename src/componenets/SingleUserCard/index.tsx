@@ -29,7 +29,7 @@ const SingleUserCard: React.FC<userProps> = ({item}) => {
             </div>
             <div className="content">
                 <div>
-                    <p className="name"><a href={url} target={'_blank'}>{name}</a></p>
+                    <p className="name"><a href={url} target={'_blank'} rel="noreferrer">{name}</a></p>
                     <p className="userName">{login}</p>
                 </div>
                 <div className="following">

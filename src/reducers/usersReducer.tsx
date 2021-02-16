@@ -6,7 +6,7 @@ const initialState = {
     nodes: [],
     pageInfo: {}
 }
-export default (state = initialState, action: { type: any; payload: any; }) => {
+const userReducer = (state = initialState, action: { type: any; payload: any; }) => {
     const {type, payload} = action;
     switch (type) {
         case USER_FETCHING:
@@ -31,3 +31,5 @@ export default (state = initialState, action: { type: any; payload: any; }) => {
             return state
     }
 };
+
+export default userReducer;
