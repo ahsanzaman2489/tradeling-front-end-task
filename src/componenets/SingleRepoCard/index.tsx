@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './SingleReporCard.module.scss';
 
 interface repoProps {
     item: {
@@ -25,12 +24,12 @@ interface repoProps {
 }
 
 const SingleRepoCard: React.FC<repoProps> = ({item}) => {
-    const {name, url, owner, stargazerCount, forks, isPrivate, primaryLanguage, pullRequests} = item;
+    const {name, url, owner, stargazerCount, forks, primaryLanguage, pullRequests} = item;
     return (
         <div className="card">
             <div className="content">
                 <div>
-                    <p className="name"><a href={url} target={'_blank'}>{name}</a></p>
+                    <p className="name"><a href={url} target={'_blank'} rel="noreferrer">{name}</a></p>
                     <p className="language">
                         <span className="languageColor"
                               style={{background: primaryLanguage?.color}}/> {primaryLanguage?.name}
